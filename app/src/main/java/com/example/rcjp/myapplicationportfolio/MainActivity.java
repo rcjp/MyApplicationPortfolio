@@ -6,15 +6,29 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class MainActivity extends ActionBarActivity {
 
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+*/
+
+    // alternative method of injecting code using Butterknife  from jakewharton.github.io/butterknife
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -40,27 +54,21 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClick_SpotifyStreamerApp(View v) {
-        myLaunch("This button will launch my Spotify Streamer app");
+        myLaunch(getString(R.string.spotify_toast_text));
     }
 
     public void onClick_ScoresApp(View v) {
-        myLaunch("This button will launch my Scores app");
+        myLaunch(getString(R.string.scores_toast_text));
     }
 
     public void onClick_LibraryApp(View v) {
-        myLaunch("This button will launch my Library app");
+        myLaunch(getString(R.string.library_toast_text));
     }
 
-    public void onClick_BuildItBiggerApp(View v) {
-        myLaunch("This button will launch my Build It Bigger app");
-    }
-
-    public void onClick_XYZReaderApp(View v) {
-        myLaunch("This button will launch my XYZ Reader app");
-    }
+    // Build_it_bigger and XYZ_reader use alternative Butterknife
 
     public void onClick_CapstoneApp(View v) {
-        myLaunch("This button will launch my Capstone app");
+        myLaunch(getString(R.string.capstone_my_own_app_toast_text));
     }
 
     private void myLaunch(String s) {
@@ -68,5 +76,17 @@ public class MainActivity extends ActionBarActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, s, duration);
         toast.show();
+    }
+
+    // alternative shorter method - uses button text
+    public void myLaunch_alt(View view) {
+        Button btn = (Button)view;
+        Toast.makeText(getApplicationContext(), "Button launches " + (CharSequence) btn.getText(), Toast.LENGTH_SHORT).show();
+    }
+
+    // another alternative method using Butterknife from jakewharton.github.io/butterknife  see onCreate above
+    @OnClick({R.id.btn_build_it_bigger,R.id.btn_xyz_reader})
+    public void showToast(Button btn){
+        Toast.makeText(this, String.format("Butterknife Onclick launches %s", btn.getText()), Toast.LENGTH_SHORT).show();
     }
 }
